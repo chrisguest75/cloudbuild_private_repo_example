@@ -58,7 +58,7 @@ steps:
   args:
   - 'build'
   - '--tag=gcr.io/$PROJECT_ID/$REPO_NAME:latest'
-  - '--file=Dockerfile'
+  - '--file=./hellonode/Dockerfile'
   - './hellonode'
 
   # TODO: This has an issue that it might have had another commit since build trigger.  
