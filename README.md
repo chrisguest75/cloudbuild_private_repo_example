@@ -40,3 +40,10 @@ curl http://localhost:5000
 * Watch the GCP console and monitor the build. 
 
 
+# Github Integration 
+
+After installing the Github integration you can configure it. During configuation it will swith to GCP
+![](./images/integrate1.png)
+
+The repository can be selected.
+![](./images/integrate2.png)
