@@ -7,4 +7,11 @@ services:
     environment: 
       PORT: 5000
       HOSTNAME: 0.0.0.0
-    
+
+  public-node:
+    image: gcr.io/open-source-01/cloudbuild_private_repo_example:latest
+    ports:
+      - 3000:3000
+    environment: 
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
