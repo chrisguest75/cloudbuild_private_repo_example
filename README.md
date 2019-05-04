@@ -8,8 +8,8 @@ With just the Cloud Build integration it will take a private repo and build from
 
 If you want to have a simple incremental build number without too many external dependencies.  You can sync the repo manually and securely use the git branch depth as the build number.
 
-[access-private-github-repos](https://cloud.google.com/cloud-build/docs/access-private-github-repos)
-[get-a-pseudo-sequential-build-number-in-google-cloud-build](https://medium.com/@nieldw/get-a-pseudo-sequential-build-number-in-google-cloud-build-85ae591cf86)
+* [access-private-github-repos](https://cloud.google.com/cloud-build/docs/access-private-github-repos)
+* [get-a-pseudo-sequential-build-number-in-google-cloud-build](https://medium.com/@nieldw/get-a-pseudo-sequential-build-number-in-google-cloud-build-85ae591cf86)
 
 # Running NodeApp Locally
 You can run and debug the hellonode app in VSCode or through docker-compose.
@@ -47,3 +47,6 @@ After installing the Github integration you can configure it. During configuatio
 
 The repository can be selected.
 ![](./images/integrate2.png)
+
+You can also unlink the projects from here. 
+![](./images/integrate3.png)
