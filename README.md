@@ -8,8 +8,9 @@ With just the Cloud Build integration it will take a private repo and build from
 
 If you want to have a simple incremental build number without too many external dependencies.  You can sync the repo manually and securely use the git branch depth as the build number.
 
-* [access-private-github-repos](https://cloud.google.com/cloud-build/docs/access-private-github-repos)
 * [get-a-pseudo-sequential-build-number-in-google-cloud-build](https://medium.com/@nieldw/get-a-pseudo-sequential-build-number-in-google-cloud-build-85ae591cf86)
+* [access-private-github-repos](https://cloud.google.com/cloud-build/docs/access-private-github-repos)
+* [use-encrypted-secrets-credentials](https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-secrets-credentials)
 
 # Running NodeApp Locally
 You can run and debug the hellonode app in VSCode or through docker-compose.
@@ -31,9 +32,17 @@ curl http://localhost:5000
         * Enable Google Container Registry (choose if you want your registry public or not)
         * Enable Cloud Build
         * Enable KMS and create a keyring and key
+        * Permissions on the cloudbuild account for kms key decryption
+
+
+* Create ./.env
+    * Copy ./.env_template to ./.env
+    * Write the parameters into it. 
 * Generate an SSL key and upload to Github
     * Use ./create_key.sh
     * After using the script upload the ./cloudbuild_ssh.key.pub to github as an ssl key.
+* Set permissions on the key
+    * Use ./create_permissions.sh
 * Add the Github Cloud Build integration 
 * Change the cloudbuild.yaml
     * _GITHUB_USERNAME: "chrisguest75" 
