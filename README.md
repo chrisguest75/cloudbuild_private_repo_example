@@ -12,6 +12,10 @@ If you want to have a simple incremental build number without too many external 
 * [access-private-github-repos](https://cloud.google.com/cloud-build/docs/access-private-github-repos)
 * [use-encrypted-secrets-credentials](https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-secrets-credentials)
 
+# The repo is public!!
+Yes it is.  But the techniques used work for private repos, through the authentication mechanisms.  
+The github ssh key can only be decrypted by my Cloud Build Agent. 
+
 # Running NodeApp Locally
 You can run and debug the hellonode app in VSCode or through docker-compose.
 
@@ -40,14 +44,18 @@ curl http://localhost:5000
     * Write the parameters into it. 
 * Generate an SSL key and upload to Github
     * Use ./create_key.sh
-    * After using the script upload the ./cloudbuild_ssh.key.pub to github as an ssl key.
+    * After using the script upload the ./cloudbuild_ssh.key.pub to github as an ssl key. [Github SSH](#Github-SSH)
 * Set permissions on the key
     * Use ./create_permissions.sh
-* Add the Github Cloud Build integration 
+* Add the Github Cloud Build integration - [Github Integration](#Github-Integration)
 * Change the cloudbuild.yaml
     * _GITHUB_USERNAME: "chrisguest75" 
 * Commit changes to the repo 
 * Watch the GCP console and monitor the build. 
+
+# Github SSH
+Add the SSH key here. 
+![](./images/githubssh.png)
 
 # Github Integration 
 
@@ -59,3 +67,4 @@ The repository can be selected.
 
 You can also unlink the projects from here. 
 ![](./images/integrate3.png)
+
