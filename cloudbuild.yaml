@@ -1,0 +1,89 @@
+substitutions:
+  _TWO_PART_VERSION: "0.1" 
+  _GITHUB_USERNAME: "chrisguest75" 
+
+steps:
+# Show some debug info - current state of folder.
+- name: 'gcr.io/cloud-builders/git'
+  entrypoint: '/bin/bash'
+  args:
+  - '-c'
+  - |
+    pwd
+    ls -la
+
+# Decrypt the ssh key.
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - kms
+  - decrypt
+  - --ciphertext-file=cloudbuild_ssh.key.enc
+  - --plaintext-file=/root/.ssh/id_rsa
+  - --location=global
+  - --keyring=cloudbuild-keyring
+  - --key=github-key
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# Modify known hosts.
+- name: 'gcr.io/cloud-builders/git'
+  entrypoint: '/bin/bash'
+  args:
+  - '-c'
+  - |
+    chmod 600 /root/.ssh/id_rsa
+    cat <<EOF >/root/.ssh/config
+    Hostname github.com
+    IdentityFile /root/.ssh/id_rsa
+    EOF
+    mv known_hosts /root/.ssh/known_hosts
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# Use git clone.
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - clone
+  - git@github.com: ${_GITHUB_USERNAME}/$REPO_NAME
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--tag=gcr.io/$PROJECT_ID/$REPO_NAME:latest'
+  - '--file=Dockerfile'
+  - '.'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag',
+    'gcr.io/$PROJECT_ID/$REPO_NAME:latest',
+    'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+    
+- name: gcr.io/cloud-builders/git
+  entrypoint: /bin/bash
+  args:
+  - '-c'
+  - |
+    cd $REPO_NAME
+    pwd
+    ls -la
+    echo ${_TWO_PART_VERSION}.$(git rev-list --count ${BRANCH_NAME}) > IMAGE_TAG
+  
+- name: gcr.io/cloud-builders/docker
+  entrypoint: /bin/bash
+  args:
+  - '-c'
+  - |
+    cd $REPO_NAME
+    docker tag gcr.io/$PROJECT_ID/$REPO_NAME:latest gcr.io/$PROJECT_ID/$REPO_NAME:$(cat IMAGE_TAG)
+    docker push gcr.io/$PROJECT_ID/$REPO_NAME:$(cat IMAGE_TAG)
+  
+images: ['gcr.io/$PROJECT_ID/$REPO_NAME:latest',
+        'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+
+
+
