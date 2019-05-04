@@ -59,10 +59,10 @@ steps:
   - 'build'
   - '--tag=gcr.io/$PROJECT_ID/$REPO_NAME:latest'
   - '--file=Dockerfile'
-  - '.'
+  - './hellonode'
 
   # TODO: This has an issue that it might have had another commit since build trigger.  
-  #- './$REPO_NAME'
+  #- './$REPO_NAME/hellonode'
 
 # Retag latest with git sha 
 - name: 'gcr.io/cloud-builders/docker'
